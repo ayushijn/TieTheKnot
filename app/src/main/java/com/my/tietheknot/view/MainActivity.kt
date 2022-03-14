@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
     private fun setAdapter() {
         adapter = MyRecyclerviewAdapter(dataList, object :RecyclerViewClickListener{
             override fun onClick(view: View?, pos: Int) {
-                Toast.makeText(this@MainActivity , "Error",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@MainActivity , "Error",Toast.LENGTH_SHORT).show()
 
             }
         })
