@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         setAdapter()
         viewModel.getMatchListData()
+        viewModel.getResultList(this)
         viewModel.listData.observe(this, androidx.lifecycle.Observer {
             parseResponse(it)
         })
