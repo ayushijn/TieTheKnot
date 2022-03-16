@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="model"
             type="com.my.findurmatch.model.ResultsItem" />
+
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,8 +33,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src_url="@{model.picture.large}"
-                    />
+                    android:src_url="@{model.picture.large}" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -41,7 +44,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:layout_marginBottom="120dp"
+                        android:layout_marginBottom="80dp"
                         android:orientation="vertical"
                         android:paddingBottom="70dp">
 
@@ -97,6 +100,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:visibility="@{model.status==0?View.VISIBLE:View.GONE}"
                             android:orientation="horizontal">
 
                             <ImageButton
@@ -122,22 +126,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Member Accepted !"
-                            android:textColor="@color/grey"
+                            android:textColor="@{model.status==1?@color/green :@color/red}"
+                            android:text="@{model.status==1 ?`Member Accepted !`:`Member Declined !`}"
                             android:textSize="24sp"
                             android:textStyle="bold"
-                            android:visibility="gone" />
+                            android:visibility="@{model.status==0?View.GONE:View.VISIBLE}" />
 
-                        <TextView
-                            android:id="@+id/declined_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Member Declined !"
-                            android:textColor="@color/grey"
-                            android:textSize="24sp"
-                            android:textStyle="bold"
-                            android:visibility="gone" />
+
                     </FrameLayout>
                 </RelativeLayout>
             </FrameLayout>

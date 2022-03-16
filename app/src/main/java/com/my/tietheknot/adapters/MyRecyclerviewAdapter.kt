@@ -33,15 +33,9 @@ class MyRecyclerviewAdapter(
 
         holder.binding.model = mList[position]
         holder.binding.acceptBtn.setOnClickListener {
-            holder.binding.btnlayout.visibility = View.GONE
-            holder.binding.acceptedTv.visibility = View.VISIBLE
-
             listener.onClick(holder.binding.acceptBtn, position)
         }
         holder.binding.declineBtn.setOnClickListener {
-            holder.binding.btnlayout.visibility = View.GONE
-            holder.binding.declinedTv.visibility = View.VISIBLE
-
             listener.onClick(holder.binding.declineBtn, position)
         }
     }

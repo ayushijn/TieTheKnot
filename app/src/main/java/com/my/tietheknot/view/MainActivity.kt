@@ -11,16 +11,11 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.recylerviewasviewpager.LinePagerIndicatorDecoration
 import com.my.findurmatch.adapters.MyRecyclerviewAdapter
 import com.my.findurmatch.interfaces.RecyclerViewClickListener
-import com.my.findurmatch.model.ApiResponse
 import com.my.findurmatch.model.ResultsItem
 import com.my.tietheknot.R
-import com.my.tietheknot.api.ApiClient
-import com.my.tietheknot.api.GetData
 import com.my.tietheknot.databinding.ActivityMainBinding
+import com.my.tietheknot.db.User
 import com.my.tietheknot.viewmodel.MainViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -36,23 +31,42 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         setAdapter()
         viewModel.getMatchListData()
-        viewModel.getResultList(this)
         viewModel.listData.observe(this, androidx.lifecycle.Observer {
             parseResponse(it)
         })
+        viewModel.userList.observe(this, androidx.lifecycle.Observer {
+            parseDBResponse(it)
+        })
 
 
+    }
+
+    private fun parseDBResponse(users: List<User>?) {
+
+        users?.let {
+            if (users.size > 0 && dataList.size > 0) {
+                for (i in users.indices) {
+                    for (j in dataList.indices) {
+                        if (users[i].email.equals(dataList[j].email)) {
+                            dataList[j].status = users[i].status
+                        }
+                    }
+
+                }
+            }
+        }
+        adapter.notifyDataSetChanged()
     }
 
     private fun parseResponse(list: ArrayList<ResultsItem>?) {
         showProgressBar()
         list?.let {
             dismiss()
-            dataList.clear();
+            dataList.clear()
             dataList.addAll(it)
-            adapter.notifyDataSetChanged()
+            viewModel.getResultList(this)
         } ?: run {
-            Toast.makeText(this@MainActivity,"Something went wrong",Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this@MainActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
             dismiss()
         }
     }
@@ -70,8 +84,25 @@ class MainActivity : AppCompatActivity() {
     private fun setAdapter() {
         adapter = MyRecyclerviewAdapter(dataList, object : RecyclerViewClickListener {
             override fun onClick(view: View?, pos: Int) {
-//                Toast.makeText(this@MainActivity , "Error",Toast.LENGTH_SHORT).show()
+                when (view?.id) {
+                    R.id.accept_btn -> {
+                        dataList[pos].status = 1
+                        viewModel.addUser(
+                            this@MainActivity,
+                            User(dataList[pos].email, dataList[pos].status)
+                        )
+                    }
 
+                    R.id.decline_btn -> {
+                        dataList[pos].status = 2
+                        viewModel.addUser(
+                            this@MainActivity,
+                            User(dataList[pos].email, dataList[pos].status)
+                        )
+                    }
+
+                }
+                adapter.notifyItemChanged(pos)
             }
         })
         PagerSnapHelper().attachToRecyclerView(binding.rcView)

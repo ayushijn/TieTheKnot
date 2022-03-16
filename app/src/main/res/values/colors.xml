@@ -15,4 +15,5 @@
     <color name="appcolor">#400D6C</color>
     <color name="peach">#F6594D</color>
     <color name="green">#11AC17</color>
+    <color name="red">#ff0000</color>
 </resources>
