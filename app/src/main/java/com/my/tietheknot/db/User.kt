@@ -22,5 +22,5 @@ import androidx.room.PrimaryKey
     constructor() : this(
     "", 0
     )
-
+//data class available as model class in java
 }
